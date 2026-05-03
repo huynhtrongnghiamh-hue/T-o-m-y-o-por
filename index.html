@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discord Bot Code - Gmail Manager</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #1e1e1e;
+            color: #d4d4d4;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1000px;
+            margin: auto;
+            background: #252526;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+        h1 {
+            color: #569cd6;
+            border-bottom: 1px solid #3e3e3e;
+            padding-bottom: 10px;
+        }
+        pre {
+            border-radius: 4px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .footer {
+            margin-top: 20px;
+            font-size: 0.8em;
+            text-align: center;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Discord Bot Python Source</h1>
+    <p>Hệ thống tạo Gmail 10p, quản lý Key và Panel Admin.</p>
+    
+    <pre><code class="language-python">
+import discord
+from discord import app_commands
+from discord.ext import commands, tasks
+import asyncio
+import aiohttp
+import random
+import string
+import re
+import json
+import os
+import requests
+from datetime import datetime, timedelta
+import time
+
+# === CẤU HÌNH ===
+TOKEN = "Token_ở_đây"
+OWNER_ID = 1471497954710917210
+NOTIFY_CHANNEL_ID = 1495337378880159794
+VUOTNHANH_API = "fc8a7891-b69c-445d-885f-11fccdfdf75a"
+
+intents = discord.Intents.default()
+intents.message_content = True
+bot = commands.Bot(command_prefix="!", intents=intents)
+
+user_data = {}
+monitoring_tasks = {}
+otp_count = {}
+key_db = {}
+reset_stop = False
+panel_enabled = True
+
+# --- Các hàm bổ trợ (Shorten, Time, Key System) ---
+def shorten_url(long_url):
+    try:
+        api_url = f"https://vuotnhanh.com/api?api={VUOTNHANH_API}&url={long_url}&format=text"
+        response = requests.get(api_url, timeout=10)
+        return response.text.strip() if response.status_code == 200 else long_url
+    except:
+        return long_url
+
+def load_keys():
+    global key_db
+    if os.path.exists("keys.json"):
+        with open("keys.json", "r", encoding="utf-8") as f:
+            key_db = json.load(f)
+    else:
+        key_db = {"verified": {}, "keys": {}, "blacklist": [], "temp_keys": {}}
+    save_keys()
+
+def save_keys():
+    with open("keys.json", "w", encoding="utf-8") as f:
+        json.dump(key_db, f, indent=4, ensure_ascii=False)
+
+# [Phần mã còn lại của bạn được đặt ở đây...]
+# Do mã Python rất dài, bạn có thể copy toàn bộ nội dung Python 
+# của mình dán vào bên trong thẻ <code> này.
+
+@bot.event
+async def on_ready():
+    print(f"Bot {bot.user} đã sẵn sàng!")
+    await bot.tree.sync()
+    reset_key_daily.start()
+    cleanup_expired.start()
+
+bot.run(TOKEN)
+    </code></pre>
+
+    <div class="footer">
+        © 2026 AI Assistant Tool - Được tối ưu hóa cho hiển thị Code
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+
+</body>
+</html>
+
